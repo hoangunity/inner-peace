@@ -13,8 +13,13 @@ const authSlice = createSlice({
     changePassword(state, action) {
       state.password = action.payload;
     },
+    clearLoginForm(state) {
+      state.email = "";
+      state.password = "";
+    },
   },
 });
 
-export const { changeEmail, changePassword } = authSlice.actions;
+export const { changeEmail, changePassword, clearLoginForm } =
+  authSlice.actions;
 export const authReducer = authSlice.reducer;

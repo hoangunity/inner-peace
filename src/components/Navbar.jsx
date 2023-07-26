@@ -1,5 +1,3 @@
-// src/components/Navbar.js
-
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
@@ -11,21 +9,12 @@ const Navbar = () => {
         </NavLink>
         <ul className="flex space-x-4">
           <li>
-            <NavLink
-              to="/"
-              exact
-              className="text-white hover:text-gray-200"
-              activeClassName="underline"
-            >
+            <NavLink to="/" className="text-white hover:text-gray-200">
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/login"
-              className="text-white hover:text-gray-200"
-              activeClassName="underline"
-            >
+            <NavLink to="/login" className="text-white hover:text-gray-200">
               Login
             </NavLink>
           </li>

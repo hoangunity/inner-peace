@@ -1,5 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authReducer, changeEmail, changePassword } from "./slices/authSlice";
+import {
+  authReducer,
+  changeEmail,
+  changePassword,
+  clearLoginForm,
+} from "./slices/authSlice";
 
 const store = configureStore({
   reducer: {
@@ -8,4 +13,4 @@ const store = configureStore({
 });
 
 export { store };
-export { changeEmail, changePassword };
+export { changeEmail, changePassword, clearLoginForm };

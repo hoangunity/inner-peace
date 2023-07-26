@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { changeEmail, changePassword } from "../store";
+import { changeEmail, changePassword, clearLoginForm } from "../store";
 import Button from "../components/Buttons";
 
 const LoginPage = () => {
@@ -14,15 +14,19 @@ const LoginPage = () => {
     dispatch(changePassword(event.target.value));
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Add login logic here, e.g., authenticate the user
+  const handleLogin = (event) => {
+    event.preventDefault();
+
+    // Add login logic
     console.log("Email: ", email);
     console.log("Password: ", password);
+
+    // Clear the input after submit
+    dispatch(clearLoginForm());
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center mt-20">
       <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
         <h1 className="text-2xl font-bold mb-4">Login</h1>
         <form onSubmit={handleLogin}>

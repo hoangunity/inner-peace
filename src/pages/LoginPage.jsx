@@ -1,16 +1,24 @@
-// src/components/LoginPage.js
-
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { changeEmail, changePassword } from "../store";
+import Button from "../components/Buttons";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const { email, password } = useSelector((state) => state.auth);
+
+  const handleEmailChange = (event) => {
+    dispatch(changeEmail(event.target.value));
+  };
+
+  const handlePasswordChange = (event) => {
+    dispatch(changePassword(event.target.value));
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
     // Add login logic here, e.g., authenticate the user
-    console.log("Email:", email);
-    console.log("Password:", password);
+    console.log("Email: ", email);
+    console.log("Password: ", password);
   };
 
   return (
@@ -31,7 +39,7 @@ const LoginPage = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               placeholder="Enter your email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               required
             />
           </div>
@@ -48,16 +56,13 @@ const LoginPage = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               placeholder="Enter your password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+          <Button primary type="submit" className="rounded">
             Login
-          </button>
+          </Button>
         </form>
       </div>
     </div>

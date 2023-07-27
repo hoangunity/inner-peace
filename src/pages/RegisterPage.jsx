@@ -1,10 +1,10 @@
 import { useRegisterUserMutation } from "../store";
 import Button from "../components/Buttons";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
   const [
     registerUser,
@@ -17,7 +17,7 @@ const LoginPage = () => {
     formState: { errors: formErrors },
   } = useForm();
 
-  const handleLogin = (formData) => {
+  const handleRegister = (formData) => {
     registerUser(formData);
   };
 
@@ -31,8 +31,26 @@ const LoginPage = () => {
   return (
     <div className="flex items-center justify-center mt-10">
       <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
-        <h1 className="text-2xl font-bold mb-3">Login</h1>
-        <form onSubmit={handleSubmit(handleLogin)}>
+        <h1 className="text-2xl font-bold mb-3">Register User</h1>
+        <form onSubmit={handleSubmit(handleRegister)}>
+          <div className="mb-2">
+            <label
+              htmlFor="username"
+              className="block text-gray-700 font-semibold"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              autoComplete="on"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              {...register("username", {})}
+            />
+            <FormError>
+              {formErrors?.username?.message && formErrors.username.message}
+            </FormError>
+          </div>
           <div className="mb-2">
             <label
               htmlFor="email"
@@ -46,7 +64,7 @@ const LoginPage = () => {
               autoComplete="on"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               {...register("email", {
-                required: "Email is REQUIRED!",
+                required: "Email is REQUIRED",
               })}
             />
             <FormError>
@@ -73,6 +91,25 @@ const LoginPage = () => {
               {formErrors?.password?.message && formErrors.password.message}
             </FormError>
           </div>
+          <div className="mb-2">
+            <label
+              htmlFor="phone_number"
+              className="block text-gray-700 font-semibold"
+            >
+              Phone Number
+            </label>
+            <input
+              type="text"
+              id="phone_number"
+              autoComplete="on"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              {...register("phone_number")}
+            />
+            <FormError>
+              {formErrors?.phone_number?.message &&
+                formErrors.phone_number.message}
+            </FormError>
+          </div>
           <Button
             loading={isRegisteringUser}
             primary
@@ -80,7 +117,7 @@ const LoginPage = () => {
             type="submit"
             className="mt-4"
           >
-            Login
+            Register
           </Button>
         </form>
         <FormError>{errorRegisterUser && errorRegisterUser.error}</FormError>
@@ -97,4 +134,4 @@ function FormError({ children }) {
   );
 }
 
-export default LoginPage;
+export default RegisterPage;

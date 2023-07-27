@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { faker } from "@faker-js/faker";
 
@@ -9,7 +10,24 @@ const authApi = createApi({
   }),
   endpoints(builder) {
     return {
+      getAllUsers: builder.query({
+        providesTags: (result, error) => {
+          const tags = result.data.map((user) => {
+            return { type: "User", id: user.id };
+          });
+          return tags;
+        },
+        query: () => {
+          return {
+            method: "GET",
+            url: "/users",
+          };
+        },
+      }),
       registerUser: builder.mutation({
+        invalidatesTags: (result, error, formData) => {
+          return [{ type: "User", id: result.data.id }];
+        },
         query: (formData) => {
           return {
             method: "POST",
@@ -25,6 +43,10 @@ const authApi = createApi({
         },
       }),
       removeUser: builder.mutation({
+        invalidatesTags: (result, error, userId) => {
+          const tags = [{ type: "User", id: userId }];
+          return tags;
+        },
         query: (userId) => {
           return {
             method: "DELETE",
@@ -36,5 +58,9 @@ const authApi = createApi({
   },
 });
 
-export const { useRegisterUserMutation, useRemoveUserMutation } = authApi;
+export const {
+  useRegisterUserMutation,
+  useRemoveUserMutation,
+  useGetAllUsersQuery,
+} = authApi;
 export { authApi };

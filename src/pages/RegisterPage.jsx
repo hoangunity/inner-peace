@@ -8,7 +8,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [
     registerUser,
-    { data, error: errorRegisterUser, isLoading: isRegisteringUser, isSuccess },
+    { error: errorRegisterUser, isLoading: isRegisteringUser, isSuccess },
   ] = useRegisterUserMutation();
   const {
     register,

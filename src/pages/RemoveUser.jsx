@@ -1,6 +1,7 @@
 import { useGetAllUsersQuery, useRemoveUserMutation } from "../store";
 import Button from "../components/Buttons";
 import { useForm } from "react-hook-form";
+import Spinner from "../components/Spinner";
 
 const RemoveUser = () => {
   const [removeUser, { error: errorRemoveUser, isLoading: isRemovingUser }] =
@@ -23,6 +24,10 @@ const RemoveUser = () => {
     removeUser(formData.user_id);
   };
 
+  if (isFetchingUsers) {
+    return <Spinner />;
+  }
+
   return (
     <div className="flex items-center justify-center mt-10">
       <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
@@ -35,28 +40,24 @@ const RemoveUser = () => {
             >
               User To Delete
             </label>
-            {isFetchingUsers ? (
-              "Loading..."
-            ) : (
-              <select
-                id="user_id"
-                autoComplete="on"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                {...register("user_id", {
-                  required: "Please choose a user to delete",
+            <select
+              id="user_id"
+              autoComplete="on"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              {...register("user_id", {
+                required: "Please choose a user to delete",
+              })}
+            >
+              <option value="">--Please choose an option--</option>
+              {users &&
+                users.map((user) => {
+                  return (
+                    <option key={user.id} value={user.id}>
+                      {user.username}
+                    </option>
+                  );
                 })}
-              >
-                <option value="">--Please choose an option--</option>
-                {users &&
-                  users.map((user) => {
-                    return (
-                      <option key={user.id} value={user.id}>
-                        {user.username}
-                      </option>
-                    );
-                  })}
-              </select>
-            )}
+            </select>
           </div>
           <div className="flex flex-row gap-2 items-center">
             <Button

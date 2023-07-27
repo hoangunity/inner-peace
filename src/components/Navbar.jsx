@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import Button from "./Buttons";
-import { useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 
 const Navbar = ({ links }) => {

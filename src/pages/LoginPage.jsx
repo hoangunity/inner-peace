@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
+import Spinner from "../components/Spinner";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -38,6 +39,10 @@ const LoginPage = () => {
       reset();
     }
   }, [loginSuccess, reset, navigate, setAuthToken, userToken, authToken]);
+
+  if (isLogin) {
+    return <Spinner />;
+  }
 
   return (
     <div className="flex items-center justify-center mt-10">

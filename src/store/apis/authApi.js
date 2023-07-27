@@ -12,10 +12,14 @@ const authApi = createApi({
     return {
       getAllUsers: builder.query({
         providesTags: (result, error) => {
-          const tags = result.data.map((user) => {
-            return { type: "User", id: user.id };
-          });
-          return tags;
+          if (!result) {
+            return [];
+          } else {
+            const tags = result.data.map((user) => {
+              return { type: "User", id: user.id };
+            });
+            return tags;
+          }
         },
         query: () => {
           return {
@@ -54,6 +58,18 @@ const authApi = createApi({
           };
         },
       }),
+      loginUser: builder.mutation({
+        query: (formData) => {
+          return {
+            method: "POST",
+            url: `/login`,
+            body: {
+              email: formData.email,
+              password: formData.password,
+            },
+          };
+        },
+      }),
     };
   },
 });
@@ -62,5 +78,6 @@ export const {
   useRegisterUserMutation,
   useRemoveUserMutation,
   useGetAllUsersQuery,
+  useLoginUserMutation,
 } = authApi;
 export { authApi };

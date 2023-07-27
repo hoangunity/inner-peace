@@ -19,4 +19,5 @@ export {
   useRegisterUserMutation,
   useRemoveUserMutation,
   useGetAllUsersQuery,
+  useLoginUserMutation,
 } from "./apis/authApi";

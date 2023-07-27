@@ -6,7 +6,11 @@ const RemoveUser = () => {
   const [removeUser, { error: errorRemoveUser, isLoading: isRemovingUser }] =
     useRemoveUserMutation();
 
-  const { data, isLoading, error } = useGetAllUsersQuery();
+  const {
+    data,
+    isLoading: isFetchingUsers,
+    error: errorFetchingUser,
+  } = useGetAllUsersQuery();
   const users = data && data.data;
 
   const {
@@ -31,24 +35,28 @@ const RemoveUser = () => {
             >
               User To Delete
             </label>
-            <select
-              id="user_id"
-              autoComplete="on"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              {...register("user_id", {
-                required: "Please choose a user to delete",
-              })}
-            >
-              <option value="">--Please choose an option--</option>
-              {users &&
-                users.map((user) => {
-                  return (
-                    <option key={user.id} value={user.id}>
-                      {user.username}
-                    </option>
-                  );
+            {isFetchingUsers ? (
+              "Loading..."
+            ) : (
+              <select
+                id="user_id"
+                autoComplete="on"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                {...register("user_id", {
+                  required: "Please choose a user to delete",
                 })}
-            </select>
+              >
+                <option value="">--Please choose an option--</option>
+                {users &&
+                  users.map((user) => {
+                    return (
+                      <option key={user.id} value={user.id}>
+                        {user.username}
+                      </option>
+                    );
+                  })}
+              </select>
+            )}
           </div>
           <div className="flex flex-row gap-2 items-center">
             <Button
@@ -66,6 +74,7 @@ const RemoveUser = () => {
           </div>
         </form>
         <FormError>{errorRemoveUser && errorRemoveUser.error}</FormError>
+        <FormError>{errorFetchingUser && errorFetchingUser.error}</FormError>
       </div>
     </div>
   );

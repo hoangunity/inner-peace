@@ -3,9 +3,11 @@ import Button from "../components/Buttons";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import useLocalStorage from "use-local-storage";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const [authToken] = useLocalStorage("authToken", "");
   const [
     registerUser,
     { error: errorRegisterUser, isLoading: isRegisteringUser, isSuccess },
@@ -22,11 +24,12 @@ const RegisterPage = () => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      reset();
+    if (authToken) {
       navigate("/");
+    } else if (isSuccess) {
+      reset();
     }
-  }, [isSuccess, navigate, reset]);
+  }, [authToken, isSuccess, navigate, reset]);
 
   return (
     <div className="flex items-center justify-center mt-10">

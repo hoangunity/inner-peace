@@ -1,15 +1,24 @@
-import { useRegisterUserMutation } from "../store";
+import { useLoginUserMutation } from "../store";
 import Button from "../components/Buttons";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useLocalStorage from "use-local-storage";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [authToken, setAuthToken] = useLocalStorage("authToken", "");
   const [
-    registerUser,
-    { error: errorRegisterUser, isLoading: isRegisteringUser, isSuccess },
-  ] = useRegisterUserMutation();
+    loginUser,
+    {
+      isSuccess: loginSuccess,
+      data: user,
+      isLoading: isLogin,
+      error: errorLogin,
+    },
+  ] = useLoginUserMutation();
+  const userToken = user && user.token;
+
   const {
     register,
     handleSubmit,
@@ -18,15 +27,17 @@ const LoginPage = () => {
   } = useForm();
 
   const handleLogin = (formData) => {
-    registerUser(formData);
+    loginUser(formData);
   };
 
   useEffect(() => {
-    if (isSuccess) {
-      reset();
+    if (authToken) {
       navigate("/");
+    } else if (loginSuccess) {
+      setAuthToken(userToken);
+      reset();
     }
-  }, [isSuccess, navigate, reset]);
+  }, [loginSuccess, reset, navigate, setAuthToken, userToken, authToken]);
 
   return (
     <div className="flex items-center justify-center mt-10">
@@ -74,7 +85,7 @@ const LoginPage = () => {
             </FormError>
           </div>
           <Button
-            loading={isRegisteringUser}
+            loading={isLogin}
             primary
             rounded
             type="submit"
@@ -83,7 +94,7 @@ const LoginPage = () => {
             Login
           </Button>
         </form>
-        <FormError>{errorRegisterUser && errorRegisterUser.error}</FormError>
+        <FormError>{errorLogin && errorLogin.data?.message}</FormError>
       </div>
     </div>
   );

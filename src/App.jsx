@@ -20,7 +20,7 @@ function App() {
       to: "register",
     },
     {
-      text: "remove-user",
+      text: "Remove User",
       to: "remove-user",
     },
   ];

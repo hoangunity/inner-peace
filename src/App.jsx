@@ -19,6 +19,10 @@ function App() {
       text: "Register",
       to: "register",
     },
+    {
+      text: "remove-user",
+      to: "remove-user",
+    },
   ];
 
   return (

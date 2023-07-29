@@ -44,6 +44,7 @@ const authApi = createApi({
                 formData.phone_number || faker.phone.number("+84 91 ### ## ##"),
               email: formData.email.toLowerCase(),
               password: formData.password,
+              role: formData.role || "user",
             },
           };
         },

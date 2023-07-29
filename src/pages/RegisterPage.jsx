@@ -114,6 +114,29 @@ const RegisterPage = () => {
                 formErrors.phone_number.message}
             </FormError>
           </div>
+          <div className="mb-2">
+            <label
+              htmlFor="role_select"
+              className="block text-gray-700 font-semibold"
+            >
+              Choose a role
+            </label>
+            <select
+              id="role_select"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              {...register("role", {
+                required: "Role is REQUIRED",
+              })}
+            >
+              <option value="">Select...</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+            <FormError>
+              {formErrors?.role_select?.message &&
+                formErrors.role_select.message}
+            </FormError>
+          </div>
           <Button
             loading={isRegisteringUser}
             primary

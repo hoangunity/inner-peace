@@ -13,7 +13,13 @@ function DashboardPage() {
     }
   }, [authToken, navigate, role]);
 
-  return <div className="grid grid-flow-row min-w-full">Content</div>;
+  return (
+    <div className={`grid h-screen grid-rows-[auto]`}>
+      <div className="flex flex-col border-b border-t border-stone-200 py-1 ">
+        <main className="flex grow flex-col">CONTENT</main>
+      </div>
+    </div>
+  );
 }
 
 export default DashboardPage;

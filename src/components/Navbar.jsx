@@ -27,7 +27,7 @@ const Navbar = ({ links }) => {
       <nav className="bg-gray-800 p-4">
         <div className="container mx-auto flex justify-between items-center">
           <NavLink to="/" className="text-white text-xl font-bold">
-            Unity Shop
+            Inner Peace
           </NavLink>
           <ul className="flex space-x-4 items-center">
             <li>
@@ -71,7 +71,7 @@ const Navbar = ({ links }) => {
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <NavLink to="/" className="text-white text-xl font-bold">
-          Unity Shop
+          Inner Peace
         </NavLink>
         <ul className="flex space-x-4">{renderedLinks}</ul>
       </div>

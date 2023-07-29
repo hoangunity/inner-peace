@@ -2,7 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    fontFamily: {
+      serif: ["Roboto", "sans-serif"],
+    },
+    extend: {
+      height: {
+        screen: "100dvh",
+      },
+    },
   },
   plugins: [],
 };

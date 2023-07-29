@@ -4,14 +4,16 @@ import useLocalStorage from "use-local-storage";
 
 function DashboardPage() {
   const [authToken] = useLocalStorage("authToken", "");
+  const [role] = useLocalStorage("role", "");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authToken) {
+    if (!authToken || !role) {
       navigate("/");
     }
-  }, [authToken, navigate]);
-  return <div>DashboardPage</div>;
+  }, [authToken, navigate, role]);
+
+  return <div className="grid grid-flow-row min-w-full">Content</div>;
 }
 
 export default DashboardPage;

@@ -34,7 +34,7 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    if (authToken) {
+    if (authToken && role) {
       navigate("/dashboard");
     } else if (loginSuccess) {
       setAuthToken(userToken);
@@ -42,6 +42,7 @@ const LoginPage = () => {
       reset();
     }
   }, [
+    role,
     loginSuccess,
     reset,
     navigate,
@@ -111,7 +112,7 @@ const LoginPage = () => {
             Login
           </Button>
         </form>
-        <FormError>{errorLogin && errorLogin.data?.message}</FormError>
+        <FormError>{errorLogin && errorLogin}</FormError>
       </div>
     </div>
   );

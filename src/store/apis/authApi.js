@@ -62,6 +62,9 @@ const authApi = createApi({
         },
       }),
       loginUser: builder.mutation({
+        transformErrorResponse: (res, meta, arg) => {
+          return res.data.message;
+        },
         query: (formData) => {
           return {
             method: "POST",

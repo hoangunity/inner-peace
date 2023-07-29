@@ -107,7 +107,17 @@ const RegisterPage = () => {
               id="phone_number"
               autoComplete="on"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              {...register("phone_number")}
+              placeholder="Enter phone number"
+              {...register("phone_number", {
+                required: {
+                  value: true,
+                  message: "Phone number is required",
+                },
+                pattern: {
+                  value: /^\+?[0-9\s-()]{8,20}$/,
+                  message: "Please enter a valid phone number",
+                },
+              })}
             />
             <FormError>
               {formErrors?.phone_number?.message &&

@@ -9,6 +9,7 @@ import Spinner from "../components/Spinner";
 const LoginPage = () => {
   const navigate = useNavigate();
   const [authToken, setAuthToken] = useLocalStorage("authToken", "");
+  const [role, setRole] = useLocalStorage("role", "");
   const [
     loginUser,
     {
@@ -19,6 +20,7 @@ const LoginPage = () => {
     },
   ] = useLoginUserMutation();
   const userToken = user && user.token;
+  const userRole = user && user.role;
 
   const {
     register,
@@ -33,12 +35,22 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (authToken) {
-      navigate("/");
+      navigate("/dashboard");
     } else if (loginSuccess) {
       setAuthToken(userToken);
+      setRole(userRole);
       reset();
     }
-  }, [loginSuccess, reset, navigate, setAuthToken, userToken, authToken]);
+  }, [
+    loginSuccess,
+    reset,
+    navigate,
+    setAuthToken,
+    userToken,
+    authToken,
+    setRole,
+    userRole,
+  ]);
 
   if (isLogin) {
     return <Spinner />;

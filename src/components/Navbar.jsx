@@ -4,10 +4,12 @@ import useLocalStorage from "use-local-storage";
 
 const Navbar = ({ links }) => {
   const [authToken, setAuthToken] = useLocalStorage("authToken", "");
-  // const authToken = localStorage.getItem("authToken");
+  const [role, setRole] = useLocalStorage("role", "");
+  // const navigate = useNavigate();
 
   const logoutUser = () => {
     setAuthToken(null);
+    setRole(null);
   };
 
   const renderedLinks = links.map((link, index) => {
@@ -33,6 +35,24 @@ const Navbar = ({ links }) => {
                 Home
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/dashboard"
+                className="text-white hover:text-gray-200"
+              >
+                Dashboard
+              </NavLink>
+            </li>
+            {role === "admin" && (
+              <li>
+                <NavLink
+                  to="/remove-user"
+                  className="text-white hover:text-gray-200"
+                >
+                  Remove User
+                </NavLink>
+              </li>
+            )}
             <li>
               <Button
                 onClick={logoutUser}

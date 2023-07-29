@@ -2,8 +2,20 @@ import { useGetAllUsersQuery, useRemoveUserMutation } from "../store";
 import Button from "../components/Buttons";
 import { useForm } from "react-hook-form";
 import Spinner from "../components/Spinner";
+import useLocalStorage from "use-local-storage";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RemoveUser = () => {
+  const [authToken] = useLocalStorage("authToken", "");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!authToken) {
+      return navigate("/");
+    }
+  }, [navigate, authToken]);
+
   const [removeUser, { error: errorRemoveUser, isLoading: isRemovingUser }] =
     useRemoveUserMutation();
 
@@ -55,7 +67,8 @@ const RemoveUser = () => {
                 users.map((user) => {
                   return (
                     <option key={user.id} value={user.id}>
-                      {user.username}
+                      {user.username} -{" "}
+                      {user.role == "admin" ? "Admin" : "User"}
                     </option>
                   );
                 })}

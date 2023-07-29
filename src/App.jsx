@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
 import RemoveUser from "./pages/RemoveUser";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   const links = [
@@ -19,10 +20,6 @@ function App() {
       text: "Register",
       to: "register",
     },
-    {
-      text: "Remove User",
-      to: "remove-user",
-    },
   ];
 
   return (
@@ -34,6 +31,7 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="remove-user" element={<RemoveUser />} />
+          <Route path="dashboard" element={<DashboardPage />} />
         </Routes>
       </Router>
     </>

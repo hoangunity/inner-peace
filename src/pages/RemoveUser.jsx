@@ -8,11 +8,10 @@ const RemoveUser = () => {
     useRemoveUserMutation();
 
   const {
-    data,
-    isLoading: isFetchingUsers,
+    data: users,
+    isLoading: isLoadingUsers,
     error: errorFetchingUser,
   } = useGetAllUsersQuery();
-  const users = data && data.data;
 
   const {
     register,
@@ -24,14 +23,16 @@ const RemoveUser = () => {
     removeUser(formData.user_id);
   };
 
-  if (isFetchingUsers) {
-    return <Spinner />;
-  }
+  if (isLoadingUsers) return <Spinner />;
 
-  return (
-    <div className="flex items-center justify-center mt-10">
-      <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
-        <h1 className="text-2xl font-bold mb-2">Delete a user</h1>
+  let content;
+  if (!users) {
+    content = (
+      <div className="text-2xl text-red-500 font-semibold">No data...</div>
+    );
+  } else {
+    content = (
+      <>
         <form onSubmit={handleSubmit(handleRemoveUser)}>
           <div className="mb-2">
             <label
@@ -40,6 +41,7 @@ const RemoveUser = () => {
             >
               User To Delete
             </label>
+            {content}
             <select
               id="user_id"
               autoComplete="on"
@@ -76,6 +78,15 @@ const RemoveUser = () => {
         </form>
         <FormError>{errorRemoveUser && errorRemoveUser.error}</FormError>
         <FormError>{errorFetchingUser && errorFetchingUser.error}</FormError>
+      </>
+    );
+  }
+
+  return (
+    <div className="flex items-center justify-center mt-10">
+      <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
+        <h1 className="text-2xl font-bold mb-2">Delete a user</h1>
+        {content}
       </div>
     </div>
   );

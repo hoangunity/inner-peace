@@ -11,11 +11,13 @@ const authApi = createApi({
   endpoints(builder) {
     return {
       getAllUsers: builder.query({
+        transformResponse: (response, meta, arg) => response.data,
         providesTags: (result, error) => {
+          console.log(result);
           if (!result) {
             return [];
           } else {
-            const tags = result.data.map((user) => {
+            const tags = result.map((user) => {
               return { type: "User", id: user.id };
             });
             return tags;
@@ -40,7 +42,7 @@ const authApi = createApi({
               username: formData.username || faker.internet.userName(),
               phone_number:
                 formData.phone_number || faker.phone.number("+84 91 ### ## ##"),
-              email: formData.email,
+              email: formData.email.toLowerCase(),
               password: formData.password,
             },
           };
@@ -64,7 +66,7 @@ const authApi = createApi({
             method: "POST",
             url: `/login`,
             body: {
-              email: formData.email,
+              email: formData.email.toLowerCase(),
               password: formData.password,
             },
           };

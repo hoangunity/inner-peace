@@ -35,7 +35,7 @@ const RegisterPage = () => {
     <div className="flex items-center justify-center mt-10">
       <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
         <h1 className="text-2xl font-bold mb-3">Register User</h1>
-        <form onSubmit={handleSubmit(handleRegister)}>
+        <form onSubmit={handleSubmit(handleRegister)} noValidate>
           <div className="mb-2">
             <label
               htmlFor="username"
@@ -48,7 +48,7 @@ const RegisterPage = () => {
               id="username"
               autoComplete="on"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              {...register("username", {})}
+              {...register("username")}
             />
             <FormError>
               {formErrors?.username?.message && formErrors.username.message}
@@ -68,6 +68,7 @@ const RegisterPage = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               {...register("email", {
                 required: "Email is REQUIRED",
+                pattern: "",
               })}
             />
             <FormError>
@@ -123,6 +124,11 @@ const RegisterPage = () => {
             Register
           </Button>
         </form>
+        {isSuccess && (
+          <span className="text-green-500 mt-2 text-sm font-semibold">
+            Registered successfully!
+          </span>
+        )}
         <FormError>{errorRegisterUser && errorRegisterUser.error}</FormError>
       </div>
     </div>

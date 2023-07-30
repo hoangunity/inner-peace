@@ -8,8 +8,11 @@ import {
 } from "../store";
 import Spinner from "../components/Spinner";
 import SessionsList from "../components/SessionsList";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function HomePage() {
+  const navigate = useNavigate();
   const [authToken] = useLocalStorage("authToken", "");
 
   const {
@@ -18,8 +21,16 @@ function HomePage() {
     error: errorGetAllTracks,
   } = useGetAllTracksQuery();
 
-  const [addSession, { data: session, isLoading, error: errorCreateSession }] =
-    useAddSessionMutation();
+  const [
+    addSession,
+    { data: session, isLoading, error: errorCreateSession, isSuccess },
+  ] = useAddSessionMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      return navigate("/sessions");
+    }
+  }, [isSuccess, navigate]);
 
   const {
     register,

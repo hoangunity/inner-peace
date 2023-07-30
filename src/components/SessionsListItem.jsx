@@ -1,3 +1,6 @@
+import useLocalStorage from "use-local-storage";
+import { useRemoveSessionMutation } from "../store";
+
 function SessionsListItem({ session }) {
   const {
     email,
@@ -11,6 +14,14 @@ function SessionsListItem({ session }) {
     track_title,
     username,
   } = session;
+  const [authToken] = useLocalStorage("authToken", "");
+
+  const [removeSession, { isLoading, isSuccess }] = useRemoveSessionMutation();
+
+  const handleDeleteSession = () => {
+    removeSession({ id: session_id, authToken: authToken });
+  };
+
   return (
     <div className="border p-2 grid grid-cols-[2fr_1fr_150px] auto-rows-max gap-x-2">
       {/* SESSION INFORMATION */}
@@ -27,7 +38,14 @@ function SessionsListItem({ session }) {
       </div>
 
       {/* ACTIONS CONTAINER */}
-      <div>ACTION AREA</div>
+      <div className="flex flex-col gap-1 p-1">
+        <button
+          onClick={handleDeleteSession}
+          className="border border-red-600 bg-red-50 p-1 text-red-600 hover:bg-red-200 hover:text-red-700 hover:font-semibold"
+        >
+          Delete Session
+        </button>
+      </div>
 
       {/* IMAGE */}
       <div className="h-max w-max flex items-center justify-center">

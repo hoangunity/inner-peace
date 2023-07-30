@@ -20,10 +20,7 @@ const sessionsApi = createApi({
           const tags = res.sessions.map((session) => {
             return { type: "Session", id: session.session_id };
           });
-          tags.push({
-            type: "User",
-            id: res?.sessions?.[0]?.session?.user_id,
-          });
+          console.log(tags);
 
           return tags;
         },
@@ -45,7 +42,7 @@ const sessionsApi = createApi({
           return res?.message;
         },
         invalidatesTags: (res, error, arg) => {
-          return [{ type: "User", id: res.session.user_id }];
+          return [{ type: "Session", id: res.session.session_id }];
         },
         query: (formData) => {
           return {
@@ -61,9 +58,34 @@ const sessionsApi = createApi({
           };
         },
       }),
+      removeSession: builder.mutation({
+        transformResponse: (response, meta, arg) => {
+          console.log(response);
+        },
+        transformErrorResponse: (res, meta, arg) => {
+          return res?.message;
+        },
+        invalidatesTags: (res, error, { id }) => {
+          const tags = [{ type: "Session", id: id }];
+          return tags;
+        },
+        query: ({ id, authToken }) => {
+          return {
+            method: "DELETE",
+            url: `/sessions/${id}`,
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          };
+        },
+      }),
     };
   },
 });
 
-export const { useAddSessionMutation, useGetAllSessionsQuery } = sessionsApi;
+export const {
+  useAddSessionMutation,
+  useGetAllSessionsQuery,
+  useRemoveSessionMutation,
+} = sessionsApi;
 export { sessionsApi };

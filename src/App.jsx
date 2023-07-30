@@ -5,6 +5,8 @@ import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
 import RemoveUser from "./pages/RemoveUser";
 import DashboardPage from "./pages/DashboardPage";
+import AddTrackPage from "./pages/AddTrackPage";
+import SessionsPage from "./pages/SessionsPage";
 
 function App() {
   const links = [
@@ -25,14 +27,18 @@ function App() {
   return (
     <>
       <Router>
-        <Navbar links={links} />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route path="remove-user" element={<RemoveUser />} />
-          <Route path="dashboard" element={<DashboardPage />} />
-        </Routes>
+        <div className="h-screen w-full grid grid-rows-[max-content_1fr] auto-rows-max">
+          <Navbar links={links} />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
+            <Route path="remove-user" element={<RemoveUser />} />
+            <Route path="dashboard" element={<DashboardPage />} />
+            <Route path="tracks/add" element={<AddTrackPage />} />
+            <Route path="sessions" element={<SessionsPage />} />
+          </Routes>
+        </div>
       </Router>
     </>
   );

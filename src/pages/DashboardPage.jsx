@@ -30,11 +30,11 @@ function DashboardPage() {
 
   let content;
   content = (
-    <div className="grid grid-flow-col auto-cols-max h-screen w-auto p-3 bg-gray-200 gap-x-4">
+    <div className="grid grid-cols-[1fr_1fr_1fr] auto-rows-[100px] h-screen p-3 bg-gray-200 gap-x-4">
       {role === "admin" && (
         <>
           <div
-            className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+            className="bg-rose-200 w-full h-max cursor-pointer hover:bg-rose-800 "
             onClick={() => navigate("/tracks/add")}
           >
             <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -42,7 +42,15 @@ function DashboardPage() {
             </div>
           </div>
           <div
-            className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+            className="bg-rose-200 w-full h-max cursor-pointer hover:bg-rose-800 "
+            onClick={() => navigate("/tracks/remove")}
+          >
+            <div className="p-3 font-semibold hover:text-white hover:font-bold">
+              DELETE A TRACK
+            </div>
+          </div>
+          <div
+            className="bg-rose-200 w-full h-max cursor-pointer hover:bg-rose-800 "
             onClick={() => navigate("/users/remove")}
           >
             <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -50,7 +58,7 @@ function DashboardPage() {
             </div>
           </div>
           <div
-            className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+            className="bg-rose-200 w-full h-max cursor-pointer hover:bg-rose-800 "
             onClick={() => navigate("/users/add")}
           >
             <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -60,7 +68,7 @@ function DashboardPage() {
         </>
       )}
       <div
-        className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+        className="bg-rose-200 w-full h-max cursor-pointer hover:bg-rose-800 "
         onClick={() => navigate("/sessions/create")}
       >
         <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -68,7 +76,7 @@ function DashboardPage() {
         </div>
       </div>
       <div
-        className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+        className="bg-rose-200 w-full h-max cursor-pointer hover:bg-rose-800 "
         onClick={() => navigate("/sessions")}
       >
         <div className="p-3 font-semibold hover:text-white hover:font-bold">

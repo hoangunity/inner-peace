@@ -30,6 +30,7 @@ export {
 export {
   useAddTrackMutation,
   useGetAllTracksQuery,
+  useRemoveTrackMutation,
 } from "./apis/soundtracksApi.js";
 export {
   useAddSessionMutation,

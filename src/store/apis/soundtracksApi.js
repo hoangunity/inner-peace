@@ -39,9 +39,28 @@ const soundtracksApi = createApi({
           };
         },
       }),
+      removeTrack: builder.mutation({
+        transformResponse: (response, meta, arg) => {
+          console.log(response);
+          return response.tracks;
+        },
+        query: ({ trackId, authToken }) => {
+          return {
+            method: "DELETE",
+            url: `/soundtracks/${trackId}`,
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          };
+        },
+      }),
     };
   },
 });
 
-export const { useAddTrackMutation, useGetAllTracksQuery } = soundtracksApi;
+export const {
+  useAddTrackMutation,
+  useGetAllTracksQuery,
+  useRemoveTrackMutation,
+} = soundtracksApi;
 export { soundtracksApi };

@@ -1,35 +1,32 @@
-import { useGetAllUsersQuery, useRemoveUserMutation } from "../store";
 import Button from "../components/Buttons";
 import { useForm } from "react-hook-form";
 import Spinner from "../components/Spinner";
 import useLocalStorage from "use-local-storage";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGetAllTracksQuery, useRemoveTrackMutation } from "../store";
 
-const RemoveUser = () => {
+const RemoveTrackPage = () => {
   const [authToken] = useLocalStorage("authToken", "");
+  const [role] = useLocalStorage("role", "");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authToken) {
+    if (!authToken || !role || role !== "admin") {
       return navigate("/");
     }
-  }, [navigate, authToken]);
+  }, [navigate, authToken, role]);
 
   const [
-    removeUser,
+    removeTrack,
     {
-      error: errorRemoveUser,
-      isLoading: isRemovingUser,
-      isSuccess: removeUserSuccess,
+      error: errorRemoveTrack,
+      isSuccess: removeTrackSuccess,
+      isLoading: isRemovingTrack,
     },
-  ] = useRemoveUserMutation();
+  ] = useRemoveTrackMutation();
 
-  const {
-    data: users,
-    isLoading: isLoadingUsers,
-    error: errorFetchingUser,
-  } = useGetAllUsersQuery();
+  const { data: tracks, isLoading: isFetchingTracks } = useGetAllTracksQuery();
 
   const {
     register,
@@ -37,56 +34,59 @@ const RemoveUser = () => {
     formState: { errors: formErrors },
   } = useForm();
 
-  const handleRemoveUser = (formData) => {
-    removeUser(formData.user_id);
+  const handleRemoveTrack = (formData) => {
+    removeTrack({
+      trackId: formData.track_id,
+      authToken: authToken,
+    });
   };
 
   let notification;
-  if (removeUserSuccess) {
+  if (removeTrackSuccess) {
     notification = (
       <div className="text-sm text-green-500 font-semibold">
-        Successfully removed user
+        Successfully Remove Track
       </div>
     );
-  } else if (errorRemoveUser) {
+  } else if (errorRemoveTrack) {
     notification = (
-      <FormError>{errorRemoveUser && errorRemoveUser?.data?.error}</FormError>
+      <FormError>{errorRemoveTrack && errorRemoveTrack?.data?.error}</FormError>
     );
   }
 
-  if (isLoadingUsers) return <Spinner />;
+  if (isFetchingTracks) return <Spinner />;
 
   let content;
-  if (!users) {
+  if (!tracks) {
     content = (
       <div className="text-2xl text-red-500 font-semibold">No data...</div>
     );
   } else {
     content = (
       <>
-        <form onSubmit={handleSubmit(handleRemoveUser)}>
+        <form onSubmit={handleSubmit(handleRemoveTrack)}>
           <div className="mb-2">
             <label
-              htmlFor="user_id"
+              htmlFor="track_id"
               className="block text-gray-700 font-semibold mb-2"
             >
-              User To Delete
+              Track To Delete
             </label>
+            {content}
             <select
-              id="user_id"
+              id="track_id"
               autoComplete="on"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              {...register("user_id", {
-                required: "Please choose a user to delete",
+              {...register("track_id", {
+                required: "Please choose a track to delete",
               })}
             >
               <option value="">--Please choose an option--</option>
-              {users &&
-                users.map((user) => {
+              {tracks &&
+                tracks.map((track) => {
                   return (
-                    <option key={user.id} value={user.id}>
-                      {user.username} -{" "}
-                      {user.role == "admin" ? "Admin" : "User"}
+                    <option key={track.id} value={track.id}>
+                      {track.title}
                     </option>
                   );
                 })}
@@ -94,7 +94,7 @@ const RemoveUser = () => {
           </div>
           <div className="flex flex-row gap-2 items-center">
             <Button
-              loading={isRemovingUser}
+              loading={isRemovingTrack}
               rounded
               danger
               type="submit"
@@ -108,9 +108,6 @@ const RemoveUser = () => {
           </div>
         </form>
         {notification}
-        <FormError>
-          {errorFetchingUser && errorFetchingUser?.data?.error}
-        </FormError>
       </>
     );
   }
@@ -133,4 +130,4 @@ function FormError({ children }) {
   );
 }
 
-export default RemoveUser;
+export default RemoveTrackPage;

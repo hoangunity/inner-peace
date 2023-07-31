@@ -1,13 +1,21 @@
 import useLocalStorage from "use-local-storage";
 import { useGetAllSessionsQuery } from "../store";
 import SessionsList from "../components/SessionsList";
+import { useEffect } from "react";
 
 function SessionsPage() {
   const [authToken] = useLocalStorage("authToken", "");
-  const { data, isSuccess: successGetAllSessions } =
-    useGetAllSessionsQuery(authToken);
+  const {
+    data,
+    isSuccess: successGetAllSessions,
+    refetch,
+  } = useGetAllSessionsQuery(authToken);
 
   const sessions = data?.sessions;
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <div className="w-full grid grid-rows-[max-content_1fr] bg-stone-100">

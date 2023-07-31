@@ -42,7 +42,9 @@ const sessionsApi = createApi({
           return res?.message;
         },
         invalidatesTags: (res, error, arg) => {
-          return [{ type: "Session", id: res.session.session_id }];
+          const tags = [{ type: "Session", id: res.session.id }];
+          console.log(tags);
+          return tags;
         },
         query: (formData) => {
           return {

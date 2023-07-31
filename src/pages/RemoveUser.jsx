@@ -16,8 +16,14 @@ const RemoveUser = () => {
     }
   }, [navigate, authToken]);
 
-  const [removeUser, { error: errorRemoveUser, isLoading: isRemovingUser }] =
-    useRemoveUserMutation();
+  const [
+    removeUser,
+    {
+      error: errorRemoveUser,
+      isLoading: isRemovingUser,
+      isSuccess: removeUserSuccess,
+    },
+  ] = useRemoveUserMutation();
 
   const {
     data: users,
@@ -34,6 +40,19 @@ const RemoveUser = () => {
   const handleRemoveUser = (formData) => {
     removeUser(formData.user_id);
   };
+
+  let notification;
+  if (removeUserSuccess) {
+    notification = (
+      <div className="text-sm text-green-500 font-semibold">
+        Successfully removed user
+      </div>
+    );
+  } else if (errorRemoveUser) {
+    notification = (
+      <FormError>{errorRemoveUser && errorRemoveUser?.data?.error}</FormError>
+    );
+  }
 
   if (isLoadingUsers) return <Spinner />;
 
@@ -89,8 +108,10 @@ const RemoveUser = () => {
             </FormError>
           </div>
         </form>
-        <FormError>{errorRemoveUser && errorRemoveUser.error}</FormError>
-        <FormError>{errorFetchingUser && errorFetchingUser.error}</FormError>
+        {notification}
+        <FormError>
+          {errorFetchingUser && errorFetchingUser?.data?.error}
+        </FormError>
       </>
     );
   }

@@ -22,7 +22,7 @@ const Navbar = ({ links }) => {
     );
   });
 
-  if (authToken) {
+  if (authToken && role) {
     return (
       <nav className="bg-gray-800 p-4">
         <div className="container mx-auto flex justify-between items-center">
@@ -43,16 +43,6 @@ const Navbar = ({ links }) => {
                 Dashboard
               </NavLink>
             </li>
-            {role === "admin" && (
-              <li>
-                <NavLink
-                  to="/remove-user"
-                  className="text-white hover:text-gray-200"
-                >
-                  Remove User
-                </NavLink>
-              </li>
-            )}
             <li>
               <Button
                 onClick={logoutUser}

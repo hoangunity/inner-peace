@@ -7,6 +7,7 @@ import RemoveUser from "./pages/RemoveUser";
 import DashboardPage from "./pages/DashboardPage";
 import AddTrackPage from "./pages/AddTrackPage";
 import SessionsPage from "./pages/SessionsPage";
+import CreateSessionPage from "./pages/CreateSessionPage";
 
 function App() {
   const links = [
@@ -33,10 +34,11 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
-            <Route path="remove-user" element={<RemoveUser />} />
+            <Route path="users/remove" element={<RemoveUser />} />
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="tracks/add" element={<AddTrackPage />} />
             <Route path="sessions" element={<SessionsPage />} />
+            <Route path="sessions/create" element={<CreateSessionPage />} />
           </Routes>
         </div>
       </Router>

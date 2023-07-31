@@ -49,6 +49,14 @@ function DashboardPage() {
               REMOVE USER
             </div>
           </div>
+          <div
+            className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+            onClick={() => navigate("/users/add")}
+          >
+            <div className="p-3 font-semibold hover:text-white hover:font-bold">
+              ADD NEW USER
+            </div>
+          </div>
         </>
       )}
       <div

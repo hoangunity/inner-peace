@@ -14,14 +14,11 @@ const authApi = createApi({
         transformResponse: (response, meta, arg) => response.data,
         providesTags: (result, error) => {
           console.log(result);
-          if (!result) {
-            return [];
-          } else {
-            const tags = result.map((user) => {
-              return { type: "User", id: user.id };
-            });
-            return tags;
-          }
+          const tags = result.map((user) => {
+            return { type: "User", id: user.id };
+          });
+          console.log(tags);
+          return tags;
         },
         query: () => {
           return {

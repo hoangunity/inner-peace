@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 
-const RegisterPage = () => {
+const AddNewUserPage = () => {
   const navigate = useNavigate();
   const [authToken] = useLocalStorage("authToken", "");
+  const [role] = useLocalStorage("role", "");
   const [
     registerUser,
     { error: errorRegisterUser, isLoading: isRegisteringUser, isSuccess },
@@ -24,17 +25,18 @@ const RegisterPage = () => {
   };
 
   useEffect(() => {
-    if (authToken) {
+    if (!authToken || !role || role !== "admin") {
       navigate("/");
     } else if (isSuccess) {
       reset();
     }
-  }, [authToken, isSuccess, navigate, reset]);
+  }, [authToken, navigate, role, isSuccess, reset]);
+  console.log(errorRegisterUser);
 
   return (
     <div className="flex items-center justify-center mt-10">
       <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
-        <h1 className="text-2xl font-bold mb-3">Register User</h1>
+        <h1 className="text-2xl font-bold mb-3">Add A New User</h1>
         <form onSubmit={handleSubmit(handleRegister)} noValidate>
           <div className="mb-2">
             <label
@@ -124,6 +126,29 @@ const RegisterPage = () => {
                 formErrors.phone_number.message}
             </FormError>
           </div>
+          <div className="mb-2">
+            <label
+              htmlFor="role_select"
+              className="block text-gray-700 font-semibold"
+            >
+              Choose a role
+            </label>
+            <select
+              id="role_select"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              {...register("role", {
+                required: "Role is REQUIRED",
+              })}
+            >
+              <option value="">Select...</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+            <FormError>
+              {formErrors?.role_select?.message &&
+                formErrors.role_select.message}
+            </FormError>
+          </div>
           <Button
             loading={isRegisteringUser}
             primary
@@ -155,4 +180,4 @@ function FormError({ children }) {
   );
 }
 
-export default RegisterPage;
+export default AddNewUserPage;

@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
 import { useAddTrackMutation } from "../store";
 import { useForm } from "react-hook-form";
 import { storage } from "../firebase";
-import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { v4 } from "uuid";
 
 function AddTrackPage() {
@@ -18,7 +18,9 @@ function AddTrackPage() {
     }
   }, [authToken, navigate, role]);
 
-  const [addTrack, { isLoading }] = useAddTrackMutation();
+  const [addTrack, { isSuccess, error: errorAddTrack }] = useAddTrackMutation();
+  const [uploadImageProgress, setUploadImageProgress] = useState(0);
+  const [uploadFileProgress, setUploadFileProgress] = useState(0);
 
   const {
     handleSubmit,
@@ -26,6 +28,19 @@ function AddTrackPage() {
     reset,
     formState: { errors },
   } = useForm();
+
+  let notification;
+  if (isSuccess) {
+    notification = (
+      <div className="text-lg text-green-500 font-semibold">
+        Successfully Added Track
+      </div>
+    );
+  } else if (errorAddTrack) {
+    notification = (
+      <FormError>{errorAddTrack && errorAddTrack?.data?.error}</FormError>
+    );
+  }
 
   const onSubmit = async (formData) => {
     const fileForUpload = formData.file[0];
@@ -37,17 +52,19 @@ function AddTrackPage() {
 
     // Upload file with progress tracking
     const fileUploadTask = uploadBytesResumable(fileRef, fileForUpload);
-    fileUploadTask.on('state_changed', (snapshot) => {
+    fileUploadTask.on("state_changed", (snapshot) => {
       // Track the upload progress here
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setUploadFileProgress(Math.round(progress));
       console.log(`File Upload Progress: ${progress}%`);
     });
 
     // Upload image with progress tracking
     const imageUploadTask = uploadBytesResumable(imageRef, imageForUpload);
-    imageUploadTask.on('state_changed', (snapshot) => {
+    imageUploadTask.on("state_changed", (snapshot) => {
       // Track the upload progress here
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      setUploadImageProgress(Math.round(progress));
       console.log(`Image Upload Progress: ${progress}%`);
     });
 
@@ -60,7 +77,13 @@ function AddTrackPage() {
     console.log(fileUrl);
     console.log(imageUrl);
 
-    addTrack({ fileUrl, imageUrl, trackTitle: formData.track_title });
+    addTrack({
+      fileUrl,
+      imageUrl,
+      trackTitle: formData.track_title,
+      trackName: fileName,
+      imageName: imageName,
+    });
     reset();
   };
 
@@ -92,7 +115,7 @@ function AddTrackPage() {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold">
-            Select an MP3 file:
+            Select an MP3 file: {uploadFileProgress}
           </label>
           <input
             {...register("file", {
@@ -121,7 +144,7 @@ function AddTrackPage() {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold">
-            Select an image for the track:
+            Select an image for the track: {uploadImageProgress}
           </label>
           <input
             {...register("image", {
@@ -155,6 +178,15 @@ function AddTrackPage() {
           Submit
         </button>
       </form>
+      {notification}
+    </div>
+  );
+}
+
+function FormError({ children }) {
+  return (
+    <div className="mt-2">
+      <span className="text-sm text-red-400 font-semibold">{children}</span>
     </div>
   );
 }

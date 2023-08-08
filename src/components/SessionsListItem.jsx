@@ -1,7 +1,10 @@
 import useLocalStorage from "use-local-storage";
 import { useRemoveSessionMutation } from "../store";
+import { useNavigate } from "react-router-dom";
 
 function SessionsListItem({ session }) {
+  const navigate = useNavigate();
+
   const {
     email,
     file_url,
@@ -20,6 +23,10 @@ function SessionsListItem({ session }) {
 
   const handleDeleteSession = () => {
     removeSession({ id: session_id, authToken: authToken });
+  };
+
+  const startSession = () => {
+    navigate(`/sessions/${session_id}`);
   };
 
   return (
@@ -44,6 +51,12 @@ function SessionsListItem({ session }) {
           className="border border-red-600 bg-red-50 p-1 text-red-600 hover:bg-red-200 hover:text-red-700 hover:font-semibold"
         >
           Delete Session
+        </button>
+        <button
+          onClick={startSession}
+          className="border border-green-600 bg-green-50 p-1 text-green-600 hover:bg-green-200 hover:text-green-700 hover:font-semibold"
+        >
+          Start Session
         </button>
       </div>
 

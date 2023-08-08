@@ -10,6 +10,7 @@ import SessionsPage from "./pages/SessionsPage";
 import CreateSessionPage from "./pages/CreateSessionPage";
 import AddNewUserPage from "./pages/AddNewUser";
 import RemoveTrackPage from "./pages/RemoveTrackPage";
+import SessionStartPage from "./pages/SessionStartPage";
 
 function App() {
   const links = [
@@ -44,6 +45,7 @@ function App() {
             <Route path="tracks/remove" element={<RemoveTrackPage />} />
             <Route path="sessions" element={<SessionsPage />} />
             <Route path="sessions/create" element={<CreateSessionPage />} />
+            <Route path="sessions/:sessionId" element={<SessionStartPage />} />
           </Routes>
         </div>
       </Router>

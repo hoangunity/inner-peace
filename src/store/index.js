@@ -36,4 +36,5 @@ export {
   useAddSessionMutation,
   useGetAllSessionsQuery,
   useRemoveSessionMutation,
+  useGetSessionByIdQuery,
 } from "./apis/sessionsApi.js";

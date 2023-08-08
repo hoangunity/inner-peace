@@ -11,7 +11,6 @@ function SessionsPage() {
   const {
     data,
     isSuccess: successGetAllSessions,
-    refetch,
   } = useGetAllSessionsQuery(authToken);
 
   const sessions = data?.sessions;
@@ -19,10 +18,8 @@ function SessionsPage() {
   useEffect(() => {
     if (!authToken || !role) {
       navigate("/");
-    } else {
-      refetch();
     }
-  }, [refetch, authToken, role, navigate]);
+  }, [authToken, role, navigate]);
 
   const valid = authToken && role;
   let content;

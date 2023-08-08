@@ -10,18 +10,12 @@ const sessionsApi = createApi({
   endpoints(builder) {
     return {
       getAllSessions: builder.query({
-        // transformResponse: (res, meta, arg) => {
-        //   return res.sessions;
-        // },
-        // transformErrorResponse: (res, meta, arg) => {
-        //   return res?.message;
-        // },
         providesTags: (res, error, arg) => {
           const tags = res.sessions.map((session) => {
             return { type: "Session", id: session.session_id };
           });
-          console.log(tags);
-
+          tags.push({ type: "Session/Create" });
+          console.log("Get all sessions: ", tags);
           return tags;
         },
         query: (authToken) => {
@@ -34,16 +28,29 @@ const sessionsApi = createApi({
           };
         },
       }),
-      addSession: builder.mutation({
-        transformResponse: (response, meta, arg) => {
-          console.log(response);
+      getSessionById: builder.query({
+        transformResponse: (res, meta, arg) => {
+          return res.session;
         },
+        query: ({ sessionId, authToken }) => {
+          return {
+            method: "GET",
+            url: `/sessions/${sessionId}`,
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          };
+        },
+      }),
+      addSession: builder.mutation({
         transformErrorResponse: (res, meta, arg) => {
           return res?.message;
         },
         invalidatesTags: (res, error, arg) => {
           const tags = [{ type: "Session", id: res.session.id }];
-          console.log(tags);
+          console.log(res);
+          tags.push({ type: "Session/Create" });
+          console.log("session add: ", tags);
           return tags;
         },
         query: (formData) => {
@@ -69,6 +76,7 @@ const sessionsApi = createApi({
         },
         invalidatesTags: (res, error, { id }) => {
           const tags = [{ type: "Session", id: id }];
+          console.log("remove session", tags);
           return tags;
         },
         query: ({ id, authToken }) => {
@@ -88,6 +96,7 @@ const sessionsApi = createApi({
 export const {
   useAddSessionMutation,
   useGetAllSessionsQuery,
+  useGetSessionByIdQuery,
   useRemoveSessionMutation,
 } = sessionsApi;
 export { sessionsApi };

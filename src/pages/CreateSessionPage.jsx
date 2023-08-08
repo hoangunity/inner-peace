@@ -1,29 +1,26 @@
-import { useEffect } from "react";
 import Button from "../components/Buttons";
 import { useAddSessionMutation, useGetAllTracksQuery } from "../store";
 import { useForm } from "react-hook-form";
 import Spinner from "../components/Spinner";
-import { useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CreateSessionPage() {
   const navigate = useNavigate();
   const [authToken] = useLocalStorage("authToken", "");
 
-  const {
-    data: tracks,
-    isLoading: isLoadingGetAllTracks,
-    // error: errorGetAllTracks,
-  } = useGetAllTracksQuery();
+  useEffect(() => {
+    if (!authToken) {
+      navigate("/login");
+    }
+  });
+
+  const { data: tracks, isLoading: isLoadingGetAllTracks } =
+    useGetAllTracksQuery();
 
   const [addSession, { error: errorCreateSession, isSuccess }] =
     useAddSessionMutation();
-
-  useEffect(() => {
-    if (isSuccess) {
-      return navigate("/sessions");
-    }
-  }, [isSuccess, navigate]);
 
   const {
     register,
@@ -40,6 +37,15 @@ function CreateSessionPage() {
     });
     reset();
   };
+
+  let notification;
+  if (isSuccess) {
+    notification = (
+      <div className="text-lg text-green-500 font-semibold mt-2">
+        Session added successfully!
+      </div>
+    );
+  }
 
   let content;
   if (isLoadingGetAllTracks) {
@@ -112,6 +118,7 @@ function CreateSessionPage() {
                 Create A Session
               </Button>
             </form>
+            {notification}
             <FormError>
               {errorCreateSession && errorCreateSession.message}
             </FormError>

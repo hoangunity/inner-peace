@@ -13,11 +13,10 @@ const authApi = createApi({
       getAllUsers: builder.query({
         transformResponse: (response, meta, arg) => response.data,
         providesTags: (result, error) => {
-          console.log(result);
           const tags = result.map((user) => {
             return { type: "User", id: user.id };
           });
-          console.log(tags);
+          console.log("get all users tags: ", tags);
           return tags;
         },
         query: () => {

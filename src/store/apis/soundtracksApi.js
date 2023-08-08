@@ -34,6 +34,8 @@ const soundtracksApi = createApi({
             body: {
               file_url: data.fileUrl,
               image_url: data.imageUrl,
+              file_name: data.trackName,
+              image_name: data.imageName,
               title: data.trackTitle,
             },
           };

@@ -58,7 +58,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex items-center justify-center mt-10">
+    <div className="flex items-center justify-center mt-10 h-max">
       <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
         <h1 className="text-2xl font-bold mb-3">Login</h1>
         <form onSubmit={handleSubmit(handleLogin)}>
@@ -113,6 +113,15 @@ const LoginPage = () => {
           </Button>
         </form>
         <FormError>{errorLogin && errorLogin}</FormError>
+        <p>
+          No account yet?{" "}
+          <span
+            className="text-blue-600 font-semibold cursor-pointer"
+            onClick={() => navigate("/register")}
+          >
+            Register
+          </span>
+        </p>
       </div>
     </div>
   );

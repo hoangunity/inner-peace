@@ -32,7 +32,7 @@ const RegisterPage = () => {
   }, [authToken, isSuccess, navigate, reset]);
 
   return (
-    <div className="flex items-center justify-center mt-10">
+    <div className="flex items-center justify-center mt-10 h-max">
       <div className="w-full max-w-md bg-white p-8 shadow-md rounded-md">
         <h1 className="text-2xl font-bold mb-3">Register User</h1>
         <form onSubmit={handleSubmit(handleRegister)} noValidate>
@@ -142,6 +142,15 @@ const RegisterPage = () => {
         <FormError>
           {errorRegisterUser && errorRegisterUser?.data?.error}
         </FormError>
+        <p>
+          Already have an account?{" "}
+          <span
+            className="text-blue-600 font-semibold cursor-pointer"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </span>
+        </p>
       </div>
     </div>
   );

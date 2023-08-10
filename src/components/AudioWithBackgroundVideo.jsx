@@ -50,7 +50,7 @@ const AudioWithBackgroundVideo = (props, ref) => {
           className="block mx-auto mt-16 p-4 bg-white rounded-lg shadow-lg"
           autoPlay
           loop={false}
-        // style={{ visibility: "hidden" }}
+          style={{ visibility: "hidden" }}
         >
           <source src={props.audioUrl} type="audio/mpeg" />
           {/* Add more audio source formats for cross-browser compatibility */}

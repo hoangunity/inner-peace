@@ -32,7 +32,7 @@ function SessionsListItem({ session }) {
   return (
     <div className="border p-2 grid grid-cols-[2fr_1fr_150px] auto-rows-max gap-x-2">
       {/* SESSION INFORMATION */}
-      <div className="bg-red-400 flex flex-col gap-1">
+      <div className="flex flex-col gap-1 border-r-2 p-4 bg-slate-300">
         <h2 className="text-xl font-medium">
           <strong>Track Title:</strong> <em>{track_title}</em>
         </h2>

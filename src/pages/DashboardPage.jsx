@@ -35,7 +35,7 @@ function DashboardPage() {
       {role === "admin" && (
         <>
           <div
-            className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+            className="bg-rose-200 min-w-[200px] h-max cursor-pointer hover:bg-rose-800 "
             onClick={() => navigate("/tracks/add")}
           >
             <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -43,7 +43,7 @@ function DashboardPage() {
             </div>
           </div>
           <div
-            className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+            className="bg-rose-200 min-w-[200px] h-max cursor-pointer hover:bg-rose-800 "
             onClick={() => navigate("/tracks/remove")}
           >
             <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -51,7 +51,7 @@ function DashboardPage() {
             </div>
           </div>
           <div
-            className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+            className="bg-rose-200 min-w-[200px] h-max cursor-pointer hover:bg-rose-800 "
             onClick={() => navigate("/users/remove")}
           >
             <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -59,7 +59,7 @@ function DashboardPage() {
             </div>
           </div>
           <div
-            className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+            className="bg-rose-200 min-w-[200px] h-max cursor-pointer hover:bg-rose-800 "
             onClick={() => navigate("/users/add")}
           >
             <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -69,7 +69,7 @@ function DashboardPage() {
         </>
       )}
       <div
-        className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+        className="bg-rose-200 min-w-[200px] h-max cursor-pointer hover:bg-rose-800 "
         onClick={() => navigate("/sessions/create")}
       >
         <div className="p-3 font-semibold hover:text-white hover:font-bold">
@@ -77,7 +77,7 @@ function DashboardPage() {
         </div>
       </div>
       <div
-        className="bg-rose-200 w-max h-max cursor-pointer hover:bg-rose-800 "
+        className="bg-rose-200 min-w-[200px] h-max cursor-pointer hover:bg-rose-800 "
         onClick={() => navigate("/sessions")}
       >
         <div className="p-3 font-semibold hover:text-white hover:font-bold">

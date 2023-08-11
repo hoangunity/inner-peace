@@ -6,6 +6,9 @@ export default {
       serif: ["Roboto", "sans-serif"],
     },
     extend: {
+      backgroundImage: {
+        "hero-pattern": "url('/src/assets/images/universe.png')",
+      },
       height: {
         screen: "100dvh",
       },

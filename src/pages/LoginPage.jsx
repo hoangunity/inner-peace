@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
 import Spinner from "../components/Spinner";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -122,6 +123,9 @@ const LoginPage = () => {
             Register
           </span>
         </p>
+        <div className="mt-4 flex justify-center">
+          <GoogleLoginButton />
+        </div>
       </div>
     </div>
   );

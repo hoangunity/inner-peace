@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
-import profileBanner from "../assets/images/profileBanner.jpg";
 import { useGetUserInfoQuery, useUpdateUserMutation } from "../store";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Button from "../components/Buttons";
 import Spinner from "../components/Spinner";
 
 export default function ProfilePage() {

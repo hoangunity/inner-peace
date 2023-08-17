@@ -3,6 +3,7 @@ import { useGetAllSessionsQuery } from "../store";
 import SessionsList from "../components/SessionsList";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 function SessionsPage() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ function SessionsPage() {
   const {
     data,
     isSuccess: successGetAllSessions,
+    isLoading: isLoadingGetAllSessions,
   } = useGetAllSessionsQuery(authToken);
 
   const sessions = data?.sessions;
@@ -20,6 +22,10 @@ function SessionsPage() {
       navigate("/");
     }
   }, [authToken, role, navigate]);
+
+  if (isLoadingGetAllSessions) {
+    return <Spinner />;
+  }
 
   const valid = authToken && role;
   let content;

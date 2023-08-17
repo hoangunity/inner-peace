@@ -30,14 +30,20 @@ const authApi = createApi({
         invalidatesTags: (result, error, formData) => {
           return [{ type: "User", id: result.data.id }];
         },
+        transformResponse: (response, meta, arg) => {
+          console.log(response);
+        },
+        transformErrorResponse: (res, meta, arg) => {
+          console.log(res);
+          return res.data?.message;
+        },
         query: (formData) => {
           return {
             method: "POST",
             url: "/users",
             body: {
-              username: formData.username || faker.internet.userName(),
-              phone_number:
-                formData.phone_number || faker.phone.number("+84 91 ### ## ##"),
+              username: formData.username,
+              phone_number: formData.phone_number,
               email: formData.email.toLowerCase(),
               password: formData.password,
               role: formData.role || "user",
@@ -72,6 +78,40 @@ const authApi = createApi({
           };
         },
       }),
+      firebaseLogin: builder.mutation({
+        transformResponse: (response, meta, arg) => {
+          const data = {
+            user: response.user,
+            token: response.token,
+          };
+          return data;
+        },
+        query: (firebaseUserData) => {
+          const {
+            email,
+            displayName,
+            photoURL,
+            phoneNumber,
+            emailVerified,
+            uid,
+          } = firebaseUserData;
+          return {
+            method: "POST",
+            url: `/firebase/login`,
+            body: {
+              email: email,
+              displayName: displayName,
+              photoURL: photoURL,
+              phoneNumber: phoneNumber,
+              role: "user",
+              emailVerified: emailVerified,
+            },
+            headers: {
+              uid: uid,
+            },
+          };
+        },
+      }),
     };
   },
 });
@@ -81,5 +121,6 @@ export const {
   useRemoveUserMutation,
   useGetAllUsersQuery,
   useLoginUserMutation,
+  useFirebaseLoginMutation,
 } = authApi;
 export { authApi };

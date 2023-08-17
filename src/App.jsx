@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
@@ -11,6 +16,7 @@ import CreateSessionPage from "./pages/CreateSessionPage";
 import AddNewUserPage from "./pages/AddNewUser";
 import RemoveTrackPage from "./pages/RemoveTrackPage";
 import SessionStartPage from "./pages/SessionStartPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const links = [
@@ -46,6 +52,8 @@ function App() {
             <Route path="sessions" element={<SessionsPage />} />
             <Route path="sessions/create" element={<CreateSessionPage />} />
             <Route path="sessions/:sessionId" element={<SessionStartPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
         </div>
       </Router>

@@ -3,9 +3,11 @@ import { authApi } from "./apis/authApi.js";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { soundtracksApi } from "./apis/soundtracksApi.js";
 import { sessionsApi } from "./apis/sessionsApi.js";
+import { userApi } from "./apis/userApi.js";
 
 const store = configureStore({
   reducer: {
+    [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [soundtracksApi.reducerPath]: soundtracksApi.reducer,
     [sessionsApi.reducerPath]: sessionsApi.reducer,
@@ -14,7 +16,8 @@ const store = configureStore({
     return getDefaultMiddleware()
       .concat(authApi.middleware)
       .concat(soundtracksApi.middleware)
-      .concat(sessionsApi.middleware);
+      .concat(sessionsApi.middleware)
+      .concat(userApi.middleware);
   },
 });
 
@@ -26,6 +29,7 @@ export {
   useRemoveUserMutation,
   useGetAllUsersQuery,
   useLoginUserMutation,
+  useFirebaseLoginMutation,
 } from "./apis/authApi.js";
 export {
   useAddTrackMutation,
@@ -38,3 +42,4 @@ export {
   useRemoveSessionMutation,
   useGetSessionByIdQuery,
 } from "./apis/sessionsApi.js";
+export { useGetUserInfoQuery, useUpdateUserMutation } from "./apis/userApi.js";

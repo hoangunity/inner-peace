@@ -10,7 +10,12 @@ const RegisterPage = () => {
   const [authToken] = useLocalStorage("authToken", "");
   const [
     registerUser,
-    { error: errorRegisterUser, isLoading: isRegisteringUser, isSuccess },
+    {
+      error: errorRegisterUser,
+      isLoading: isRegisteringUser,
+      registerUserSuccess: registerUserSuccess,
+      // data: registerUserApiResponse,
+    },
   ] = useRegisterUserMutation();
   const {
     register,
@@ -26,10 +31,10 @@ const RegisterPage = () => {
   useEffect(() => {
     if (authToken) {
       navigate("/");
-    } else if (isSuccess) {
+    } else if (registerUserSuccess) {
       reset();
     }
-  }, [authToken, isSuccess, navigate, reset]);
+  }, [authToken, registerUserSuccess, navigate, reset]);
 
   return (
     <div className="flex items-center justify-center mt-10 h-max">
@@ -48,7 +53,10 @@ const RegisterPage = () => {
               id="username"
               autoComplete="on"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              {...register("username")}
+              placeholder="Enter username"
+              {...register("username", {
+                required: "Username is REQUIRED",
+              })}
             />
             <FormError>
               {formErrors?.username?.message && formErrors.username.message}
@@ -65,10 +73,14 @@ const RegisterPage = () => {
               type="email"
               id="email"
               autoComplete="on"
+              placeholder="Enter email"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               {...register("email", {
                 required: "Email is REQUIRED",
-                pattern: "",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please enter a valid email",
+                },
               })}
             />
             <FormError>
@@ -86,6 +98,7 @@ const RegisterPage = () => {
               type="password"
               id="password"
               autoComplete="on"
+              placeholder="Enter password"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               {...register("password", {
                 required: "Password is REQUIRED",
@@ -134,14 +147,12 @@ const RegisterPage = () => {
             Register
           </Button>
         </form>
-        {isSuccess && (
+        {registerUserSuccess && (
           <span className="text-green-500 mt-2 text-sm font-semibold">
             Registered successfully!
           </span>
         )}
-        <FormError>
-          {errorRegisterUser && errorRegisterUser?.data?.error}
-        </FormError>
+        <FormError>{errorRegisterUser && errorRegisterUser}</FormError>
         <p>
           Already have an account?{" "}
           <span

@@ -1,4 +1,4 @@
-import { useLoginUserMutation } from "../store";
+import { useFirebaseLoginMutation, useLoginUserMutation } from "../store";
 import Button from "../components/Buttons";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
@@ -6,9 +6,21 @@ import { useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
 import Spinner from "../components/Spinner";
 import GoogleLoginButton from "../components/GoogleLoginButton";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 const LoginPage = () => {
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
+  const [
+    signInWithGoogle,
+    {
+      data: firebaseResponse,
+      isRegisteringFirebase,
+      isSuccess: firebaseLoginSuccess,
+    },
+  ] = useFirebaseLoginMutation();
+
   const [authToken, setAuthToken] = useLocalStorage("authToken", "");
   const [role, setRole] = useLocalStorage("role", "");
   const [
@@ -34,6 +46,20 @@ const LoginPage = () => {
     loginUser(formData);
   };
 
+  const handleGoogleLogin = async () => {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    signInWithGoogle({
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      phoneNumber: user.phoneNumber,
+      uid: user.uid,
+      emailVerified: user.emailVerified,
+    });
+  };
+
   useEffect(() => {
     if (authToken && role) {
       navigate("/dashboard");
@@ -41,6 +67,9 @@ const LoginPage = () => {
       setAuthToken(userToken);
       setRole(userRole);
       reset();
+    } else if (firebaseLoginSuccess) {
+      setAuthToken(firebaseResponse.token);
+      setRole(firebaseResponse.user.role);
     }
   }, [
     role,
@@ -52,9 +81,11 @@ const LoginPage = () => {
     authToken,
     setRole,
     userRole,
+    firebaseLoginSuccess,
+    firebaseResponse,
   ]);
 
-  if (isLogin) {
+  if (isLogin || isRegisteringFirebase) {
     return <Spinner />;
   }
 
@@ -74,9 +105,14 @@ const LoginPage = () => {
               type="email"
               id="email"
               autoComplete="on"
+              placeholder="Enter email"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               {...register("email", {
                 required: "Email is REQUIRED!",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please enter a valid email",
+                },
               })}
             />
             <FormError>
@@ -94,6 +130,7 @@ const LoginPage = () => {
               type="password"
               id="password"
               autoComplete="on"
+              placeholder="Enter password"
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               {...register("password", {
                 required: "Password is REQUIRED",
@@ -124,7 +161,7 @@ const LoginPage = () => {
           </span>
         </p>
         <div className="mt-4 flex justify-center">
-          <GoogleLoginButton />
+          <GoogleLoginButton onClick={handleGoogleLogin} />
         </div>
       </div>
     </div>

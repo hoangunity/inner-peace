@@ -31,7 +31,6 @@ const AddNewUserPage = () => {
       reset();
     }
   }, [authToken, navigate, role, isSuccess, reset]);
-  console.log(errorRegisterUser);
 
   return (
     <div className="flex items-center justify-center mt-10">

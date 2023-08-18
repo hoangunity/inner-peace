@@ -5,6 +5,9 @@ import { useGetUserInfoQuery, useUpdateUserMutation } from "../store";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Spinner from "../components/Spinner";
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../firebase";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -14,19 +17,15 @@ export default function ProfilePage() {
   // ==================== UI ========================
   const {
     data: userInfo,
-    isLoading,
+    isLoading: isLoadingUserInfo,
     isError,
     error,
+    refetch: refetchUserInfo,
   } = useGetUserInfoQuery(authToken);
 
   const [
     updateUser,
-    {
-      data: updateUserInfo,
-      isLoading: isUpdating,
-      error: updateUserInfoError,
-      isSuccess: updateUserInfoSuccess,
-    },
+    { isLoading: isUpdating, isSuccess: updateUserInfoSuccess },
   ] = useUpdateUserMutation();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -36,11 +35,30 @@ export default function ProfilePage() {
     handleSubmit,
     reset,
     formState: { errors: formErrors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      username: userInfo?.username || "",
+      phone_number: userInfo?.phone_number || "",
+    },
+  });
 
-  const handleUpdateUser = (formData) => {
+  const handleUpdateUser = async (formData) => {
+    console.log(formData);
+    let fileName, imageRef, fileUploadTask, imageURL;
+    const profileImage = formData.file[0];
+    if (profileImage) {
+      fileName = profileImage.name + v4();
+      imageRef = ref(storage, `usersProfile/${fileName}`);
+      fileUploadTask = await uploadBytesResumable(imageRef, profileImage);
+      imageURL = await getDownloadURL(imageRef);
+      console.log(fileUploadTask);
+      console.log(imageURL);
+    }
+
     const updateInfo = {
-      ...formData,
+      username: formData.username,
+      phone_number: formData.phone_number,
+      photo_url: imageURL || "",
       authToken: authToken,
     };
     updateUser(updateInfo);
@@ -57,7 +75,7 @@ export default function ProfilePage() {
     }
   }, [authToken, role, navigate, updateUserInfoSuccess]);
 
-  if (isUpdating) {
+  if (isUpdating || isLoadingUserInfo) {
     return <Spinner />;
   }
 
@@ -96,18 +114,53 @@ export default function ProfilePage() {
         {/* INFO ENDS HERE */}
 
         <button
-          onClick={() => setIsEditing(true)}
+          onClick={() => {
+            setIsEditing(true);
+          }}
           className="border border-blue-400 px-4 py-3 rounded-xl bg-blue-300 text-white hover:text-blue-300 hover:bg-blue-900 active:bg-blue-700 active:text-white"
         >
           Update Info
         </button>
       </div>
     );
+    // =================================
+    // UPDATE USER INFO FORM
   } else {
     content = (
       <>
         <div className="flex flex-col gap-3 mx-auto items-center relative min-h-screen min-w-full pt-5">
           <form onSubmit={handleSubmit(handleUpdateUser)} noValidate>
+            <div className="mb-2">
+              <label
+                htmlFor="file"
+                className="block text-gray-700 font-semibold"
+              >
+                Upload your profile image (Optional)
+              </label>
+              <input
+                type="file"
+                id="file"
+                className="mt-2"
+                {...register("file", {
+                  required: {
+                    value: false,
+                  },
+                  validate: {
+                    validateImageFile: (value) => {
+                      if (value.length > 0) {
+                        return value[0].type.startsWith("image/")
+                          ? true
+                          : "Only image file are allowed.";
+                      }
+                      return true;
+                    },
+                  },
+                })}
+              />
+              <FormError>
+                {formErrors?.file?.message && formErrors.file.message}
+              </FormError>
+            </div>
             <div className="mb-2">
               <label
                 htmlFor="username"
@@ -180,90 +233,6 @@ export default function ProfilePage() {
   }
 
   return content;
-
-  /* return (
-    <div className="flex flex-col gap-3 mx-auto items-center relative min-h-screen min-w-full pt-5">
-      <div className="w-20 h-20 rounded-full overflow-hidden z-10">
-        <img
-          className="w-20 h-20 object-cover"
-          src={userInfo?.photo_url}
-          alt="User Profile Image"
-        />
-      </div>
-
-      <div className="z-10 text-white flex flex-col gap-4 text-base">
-        <div>
-          Username:{" "}
-          {isEditing ? (
-            <input
-              type="text"
-              value={userInfo?.username}
-              onChange={(e) => {
-                // Implement logic to update local state
-              }}
-            />
-          ) : (
-            <span className="font-semibold">{userInfo?.username}</span>
-          )}
-        </div>
-        <div>
-          Email:{" "}
-          {isEditing ? (
-            <input
-              type="email"
-              value={userInfo?.email}
-              onChange={(e) => {
-                // Implement logic to update local state
-              }}
-            />
-          ) : (
-            <span className="font-semibold">{userInfo?.email}</span>
-          )}
-        </div>
-        <div>
-          Phone Number:{" "}
-          {isEditing ? (
-            <input
-              type="tel"
-              value={userInfo?.phone_number || ""}
-              onChange={(e) => {
-                // Implement logic to update local state
-              }}
-            />
-          ) : (
-            <span className="font-semibold">
-              {userInfo?.phone_number || ""}
-            </span>
-          )}
-        </div>
-        <div>
-          Role: <span className="font-semibold">User</span>
-        </div>
-      </div>
-
-      {isEditing ? (
-        <button
-          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-          onClick={handleSaveClick}
-        >
-          Save
-        </button>
-      ) : (
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-          onClick={handleEditClick}
-        >
-          Edit Info
-        </button>
-      )}
-
-      <img
-        className="absolute top-0 left-0 right-0 bottom-0 object-cover -z-50"
-        src={profileBanner}
-        alt="Profile Banner"
-      />
-    </div>
-  ); */
 }
 
 function FormError({ children }) {

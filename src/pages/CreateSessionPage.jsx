@@ -19,8 +19,10 @@ function CreateSessionPage() {
   const { data: tracks, isLoading: isLoadingGetAllTracks } =
     useGetAllTracksQuery();
 
-  const [addSession, { error: errorCreateSession, isSuccess }] =
-    useAddSessionMutation();
+  const [
+    addSession,
+    { error: errorCreateSession, isSuccess, isLoading: isLoadingAddSession },
+  ] = useAddSessionMutation();
 
   const {
     register,
@@ -40,11 +42,18 @@ function CreateSessionPage() {
 
   let notification;
   if (isSuccess) {
+    setTimeout(() => {
+      navigate("/sessions");
+    }, 1500)
     notification = (
       <div className="text-lg text-green-500 font-semibold mt-2">
         Session added successfully!
       </div>
     );
+  }
+
+  if (isLoadingAddSession) {
+    return <Spinner />;
   }
 
   let content;

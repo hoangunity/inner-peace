@@ -43,6 +43,7 @@ const userApi = createApi({
             body: {
               username: data.username,
               phoneNumber: data.phone_number,
+              photoUrl: data.photo_url,
             },
             headers: {
               Authorization: `Bearer ${data.authToken}`,

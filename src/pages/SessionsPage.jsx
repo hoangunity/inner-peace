@@ -45,7 +45,7 @@ function SessionsPage() {
               </div>
             ) : (
               <span className="mt-4 font-semibold text-xl">
-                You have no sessions yet.
+                You have no sessions yet. Start Adding session
               </span>
             )}
           </div>

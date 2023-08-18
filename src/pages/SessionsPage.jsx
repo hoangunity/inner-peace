@@ -38,11 +38,15 @@ function SessionsPage() {
           </div>
 
           {/* SESSIONS AREA */}
-          <div>
-            {successGetAllSessions && sessions && (
+          <div className="flex flex-col items-center">
+            {successGetAllSessions && sessions.length ? (
               <div className="bg-green-50 w-full h-full">
                 <SessionsList sessions={sessions} />
               </div>
+            ) : (
+              <span className="mt-4 font-semibold text-xl">
+                You have no sessions yet.
+              </span>
             )}
           </div>
         </div>

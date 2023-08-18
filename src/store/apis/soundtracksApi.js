@@ -10,6 +10,10 @@ const soundtracksApi = createApi({
   endpoints(builder) {
     return {
       getAllTracks: builder.query({
+        providesTags: (res, error, arg) => {
+          const tags = [{ type: "Track/Add" }, { type: "Track/Remove" }];
+          return tags;
+        },
         transformResponse: (res, meta, arg) => {
           return res.tracks;
         },
@@ -24,6 +28,9 @@ const soundtracksApi = createApi({
         },
       }),
       addTrack: builder.mutation({
+        invalidatesTags: (res, error, arg) => {
+          return [{ type: "Track/Add" }];
+        },
         transformResponse: (response, meta, arg) => {
           return response.track;
         },
@@ -42,6 +49,9 @@ const soundtracksApi = createApi({
         },
       }),
       removeTrack: builder.mutation({
+        invalidatesTags: (res, error, arg) => {
+          return [{ type: "Track/Remove" }];
+        },
         transformResponse: (response, meta, arg) => {
           console.log(response);
           return response.tracks;

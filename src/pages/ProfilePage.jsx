@@ -1,3 +1,4 @@
+import avatarProfile from "../assets/images/avatarProfile.png";
 import { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 import { useGetUserInfoQuery, useUpdateUserMutation } from "../store";
@@ -42,7 +43,6 @@ export default function ProfilePage() {
       ...formData,
       authToken: authToken,
     };
-    console.log(formData);
     updateUser(updateInfo);
     reset();
   };
@@ -68,7 +68,7 @@ export default function ProfilePage() {
         <div className="w-20 h-20 rounded-full overflow-hidden z-10">
           <img
             className="w-20 h-20 object-cover"
-            src={userInfo?.photo_url}
+            src={userInfo?.photo_url || avatarProfile}
             alt="User Profile Image"
           />
         </div>

@@ -29,6 +29,7 @@ const soundtracksApi = createApi({
       }),
       addTrack: builder.mutation({
         invalidatesTags: (res, error, arg) => {
+          console.log(res);
           return [{ type: "Track/Add" }];
         },
         transformResponse: (response, meta, arg) => {

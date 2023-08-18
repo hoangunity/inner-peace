@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+
 const authApi = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({
@@ -27,6 +28,7 @@ const authApi = createApi({
       }),
       registerUser: builder.mutation({
         invalidatesTags: (result, error, formData) => {
+          console.log(result);
           return [{ type: "User", id: result.data.id }];
         },
         transformResponse: (response, meta, arg) => {

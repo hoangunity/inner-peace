@@ -30,6 +30,7 @@ const userApi = createApi({
       updateUser: builder.mutation({
         invalidatesTags: (result, error, formData) => {
           const tags = [{ type: "User/Update" }];
+          // console.log(tags)
           return tags;
         },
         transformResponse: (response, meta, arg) => {

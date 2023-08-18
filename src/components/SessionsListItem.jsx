@@ -36,7 +36,7 @@ function SessionsListItem({ session }) {
   }
 
   return (
-    <div className="border bg-slate-200 p-2 flex flex-col gap-x-2 sm:grid sm:grid-flow-col sm:grid-cols-[1fr_max-content] sm:gap-x-2 sm:w-full">
+    <div className="border-b border-bg-slate-400 px-4 py-5 flex flex-col gap-x-2 sm:grid sm:grid-flow-col sm:grid-cols-[1fr_max-content] sm:gap-x-2 sm:w-full lg:max-w-screen-md lg:mx-auto">
       {/* SESSION INFORMATION */}
       <div className="flex flex-col gap-1 border-r-2 p-4">
         <h2 className="text-base font-medium">
@@ -51,7 +51,7 @@ function SessionsListItem({ session }) {
       </div>
 
       {/* ACTIONS AND IMAGE CONTAINER */}
-      <div className="flex w-full justify-between gap-4">
+      <div className="flex w-full justify-between gap-4 lg:gap-7">
         {/* ACTIONS CONTAINER */}
         <div className="flex flex-col gap-1 p-1 min-w-[200px] w-full">
           <button
@@ -69,11 +69,11 @@ function SessionsListItem({ session }) {
         </div>
 
         {/* IMAGE */}
-        <div className="h-max w-max items-center justify-center hidden sm:flex">
+        <div className="h-max w-max items-center justify-center hidden sm:block">
           <img
             src={image_url}
             alt="Track Display Image"
-            className="w-[150px] h-[150px] object-cover"
+            className="w-[200px] h-[150px] object-center"
           />
         </div>
       </div>
